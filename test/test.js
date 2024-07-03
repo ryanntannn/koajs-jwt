@@ -700,6 +700,31 @@ describe('success tests', () => {
         .expect(validUserResponse)
         .end(done);
   });
+
+	it('should use verifier if one is provided', done => {
+		const app = new Koa();
+
+		async function customVerify (){
+			return { foo: 'bar' };
+		}
+		
+
+		app.use(koajwt({
+			secret: 'shhhhhh',
+			verify: customVerify
+		}));
+
+		app.use(ctx => {
+			ctx.body = ctx.state.user;
+		});
+
+		request(app.listen())
+			.get('/')
+			.set('Authorization', 'Bearer 123')
+			.expect(200)
+			.expect({ foo: 'bar' })
+			.end(done)
+	});
 });
 
 describe('unless tests', () => {
