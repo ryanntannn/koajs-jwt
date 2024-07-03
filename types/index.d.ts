@@ -27,12 +27,14 @@ declare namespace jwt {
     issuer?: string | string[];
     algorithms?: string[];
 		verify?: Verifier;
+		decode?: Decoder;
   }
 
   export type Secret = string | string[] | Buffer | Buffer[];
   export type SecretLoader = (header: any, payload: any) => Promise<Secret>;
 
 	export type Verifier = (token: String, secretOrPublicKey: Secret, options: Options) => Promise<any>;
+	export type Decoder = (token: String) => Promise<Secret>;
 
 
   export type UnlessOptions = (params?: {
